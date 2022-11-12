@@ -1,8 +1,12 @@
 package it.unibo.mvc;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -26,20 +30,39 @@ public class MiniGUI {
     /**
      * Creates a new {@link MiniGUI}.
      */
-    public MiniGUI() {
+    public MiniGUI() { 
         final JPanel canvas = new JPanel();
         canvas.setLayout(new BorderLayout());
+        /*
+         * first part
+         */
+        final JPanel primoPanel = new JPanel();
+        primoPanel.setLayout(new BoxLayout(primoPanel, BoxLayout.X_AXIS));
+        canvas.add(primoPanel, BorderLayout.CENTER);
         final JButton write = new JButton("Print a random number on standard output");
-        canvas.add(write, BorderLayout.CENTER);
+        primoPanel.add(write);
+        /*
+         * second one
+         */
+        
+        final JLabel testo = new JLabel("Result");
+        canvas.add(testo, BorderLayout.NORTH);
+        /*
+         * third one
+         */
+        
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /*
          * Handlers
          */
+
         write.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.out.println(randomGenerator.nextInt());
+                int a = randomGenerator.nextInt();
+                testo.setText("Result: "+ a);
+                System.out.println(a);
             }
         });
     }
@@ -67,6 +90,7 @@ public class MiniGUI {
         /*
          * Resize the frame to minimum size
          */
+        
         frame.pack();
         /*
          * OK, ready to pull the frame onscreen

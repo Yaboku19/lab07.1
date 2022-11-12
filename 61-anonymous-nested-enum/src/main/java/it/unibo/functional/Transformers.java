@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+
 /**
  * A special utility class with methods that transform collections using {@link Function}s provided as parameters.
  */
@@ -54,7 +55,14 @@ public final class Transformers {
      * @param <O> output elements type
      */
     public static <I, O> List<O> transform(final Iterable<I> base, final Function<I, O> transformer) {
-        return null;
+        final var FunctionEvolved = new Function<I, List<O>>() {
+            @Override
+            public List<O> call(final I input) {
+                return List.of(transformer.call(input));
+            }
+            
+        };
+        return flattenTransform(base, FunctionEvolved);
     }
 
     /**
@@ -70,7 +78,7 @@ public final class Transformers {
      * @param <I> type of the collection elements
      */
     public static <I> List<? extends I> flatten(final Iterable<? extends Collection<? extends I>> base) {
-        return null;
+        return flattenTransform(base, Function.identity());
     }
 
     /**
@@ -87,7 +95,18 @@ public final class Transformers {
      * @param <I> elements type
      */
     public static <I> List<I> select(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+        final var testEvolved = new Function<I, List<I>> () {
+            @Override
+            public List<I> call(final I input) {
+                if (test.call(input)) {
+                    return List.of(input);
+                }else {
+                    return new ArrayList<I>();
+                }
+            }
+
+        };
+        return flattenTransform(base, testEvolved);
     }
 
     /**
@@ -103,6 +122,14 @@ public final class Transformers {
      * @param <I> elements type
      */
     public static <I> List<I> reject(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+        final var testWow = new Function<I, Boolean> () {
+            @Override
+            public Boolean call(I input) {
+                // TODO Auto-generated method stub
+                return !test.call(input);
+            }
+
+        };
+        return select(base, testWow);
     }
 }

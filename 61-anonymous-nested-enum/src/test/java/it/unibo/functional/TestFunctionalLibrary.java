@@ -13,7 +13,7 @@ import static it.unibo.functional.Transformers.transform;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests for the {@link Transformers}.
+ * Tests for the {@link Transformers}. 
  */
 class TestFunctionalLibrary {
 

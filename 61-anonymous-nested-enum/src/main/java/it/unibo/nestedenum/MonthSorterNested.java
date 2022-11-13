@@ -42,24 +42,21 @@ public final class MonthSorterNested implements MonthSorter {
 
         public static Month fromString(final String name) {
             Objects.requireNonNull(name);
-            try {
-                return valueOf(name);
-            }catch(IllegalArgumentException e) {
-                Month match = null;
-                for(final Month month: values()) {
-                    if(month.toString().toLowerCase().startsWith(name.toString().toLowerCase())) {
-                        if (match != null) {
-                            throw new IllegalArgumentException(name + " is ambiguous: both " + match + " and " + month + 
-                            " would be valid match",e);
-                        }
-                        match = month;
+            Month match = null;
+            for(final Month month: values()) {
+                if(month.toString().toLowerCase().startsWith(name.toString().toLowerCase())) {
+                    if (match != null) {
+                        throw new IllegalArgumentException(name + " is ambiguous: both " + match + " and " + month + 
+                        " would be valid match",new IllegalArgumentException());
                     }
+                    match = month;
                 }
-                if (match == null) {
-                    throw new IllegalArgumentException("No matching months for " + name, e);
-                }
-                return match;
             }
+            if (match == null) {
+                throw new IllegalArgumentException("No matching months for " + name, new IllegalArgumentException());
+            }
+            return match;
+            
         }
     };
 

@@ -1,4 +1,4 @@
-package it.unibo.mvc;
+package it.unibo.mvc.api;
 
 import it.unibo.mvc.api.DrawNumberController;
 import it.unibo.mvc.controller.DrawNumberControllerImpl;

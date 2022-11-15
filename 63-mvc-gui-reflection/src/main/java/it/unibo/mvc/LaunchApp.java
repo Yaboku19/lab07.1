@@ -7,7 +7,6 @@ import it.unibo.mvc.api.DrawNumberController;
 import it.unibo.mvc.api.DrawNumberView;
 import it.unibo.mvc.controller.DrawNumberControllerImpl;
 import it.unibo.mvc.model.DrawNumberImpl;
-import it.unibo.mvc.view.DrawNumberSwingView;
 
 /**
  * Application entry-point.
@@ -29,22 +28,26 @@ public final class LaunchApp {
      * @throws IllegalArgumentException in case of reflection issues
      */
     public static void main(final String... args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        
         final var model = new DrawNumberImpl();
         final DrawNumberController app = new DrawNumberControllerImpl(model);
-        for (final var viewType: List.of("Output", "Swing")) {
-            final var clazz = Class.forName("it.unibo.mvc.view.DrawNumber" + viewType + "View");
-            for (int i = 0; i < 3; i++) {
-                final var newView = clazz.getConstructor().newInstance();
+        /*app.addView(new DrawNumberSwingView());
+        app.addView(new DrawNumberOutputView());
+        app.addView(new DrawNumberSwingView()); */
+        for (final String name: List.of("Output", "Swing")) {
+            final String className = "it.unibo.mvc.view.DrawNumber" + name + "View";
+            final Class<?> clas = Class.forName(className);
+            for (int i=1;i<=3;i++) {
+                final var newView = clas.getConstructor().newInstance();
                 if (DrawNumberView.class.isAssignableFrom(newView.getClass())) {
-                    app.addView((DrawNumberView) newView);
-                } else {
+                    app.addView((DrawNumberView)newView);
+                }else {
                     throw new IllegalStateException(
-                        newView.getClass() + " is not a subclass of " + DrawNumberView.class
-                    );
+                            newView.getClass() + " is not a subclass of " + DrawNumberView.class
+                        );
                 }
             }
+            
+            
         }
-    
     }
 }
